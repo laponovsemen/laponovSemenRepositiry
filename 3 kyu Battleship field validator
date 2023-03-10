@@ -1,0 +1,155 @@
+/* Write a method that takes a field for well-known board game "Battleship" as an 
+argument and returns true if it has a valid disposition of ships, false otherwise.
+Argument is guaranteed to be 10*10 two-dimension array. Elements in the array are 
+numbers, 0 if the cell is free and 1 if occupied by ship.
+
+Battleship (also Battleships or Sea Battle) is a guessing game for two players. Each
+player has a 10x10 grid containing several "ships" and objective is to destroy enemy's
+forces by targetting individual cells on his field. The ship occupies one or more cells
+in the grid. Size and number of ships may differ from version to version. In this kata
+we will use Soviet/Russian version of the game.
+
+
+Before the game begins, players set up the board and place the ships accordingly to 
+the following rules:
+There must be single battleship (size of 4 cells), 2 cruisers (size 3), 3 destroyers
+(size 2) and 4 submarines (size 1). Any additional ships are not allowed, as well as missing ships.
+Each ship must be a straight line, except for submarines, which are just single cell.
+
+
+The ship cannot overlap or be in contact with any other ship, neither by edge nor by
+corner.
+
+This is all you need to solve this kata. If you're interested in more information about
+the game, visit this link. * /
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function validateBattlefield(field) {
+  // write your magic here
+  var newPatternField = [];
+  //checkForSumOfAllShips
+  var overallSum = 4 * 1 + 2 * 3 + 3 * 2 + 1 * 4;
+  var sumOfTheFields = 0;
+  for(let i = 0 ; i < field.length; i++){
+    for(let j = 0 ; j < field[i].length; j++){
+      sumOfTheFields += field[i][j];
+    }
+  }
+  if(sumOfTheFields !== overallSum){
+    return false;
+  }
+  //checkForSumOfAllShips
+  //check for being to close
+  for(let i = 0 ; i < field.length - 1 ; i++){
+    for(let j = 0 ; j < field[i].length - 1; j++){
+      if(field[i][j] == 1 && field[i + 1][j + 1] == 1){
+        return false;
+      }
+      if(field[i][j + 1] == 1 && field[i + 1][j] == 1){
+        return false;
+      }
+    }
+  }
+  //check for being to close ^
+  newPatternField = field;
+  var newArrToAdd = [0, 0];
+  for(let i = 0 ; i < field.length  ; i++){
+    newPatternField[i].push(0);
+    newPatternField[i].unshift(0);
+    newArrToAdd.push(0);
+  }
+  newPatternField.push(newArrToAdd);
+  newPatternField.unshift(newArrToAdd);
+  //check for appropriate size of the ships
+    //check for quantity of 4-size battleship (linearship)
+  var linearship = 0;
+  for(let i = 1; i < newPatternField.length - 1 ; i++){
+    for(let j = 1; j < newPatternField[i].length - 5; j++){
+      if(newPatternField[i][j - 1] == 0 && 
+         newPatternField[i][j] == 1 && 
+         newPatternField[i][j + 1] == 1 &&
+         newPatternField[i][j + 2] == 1 && 
+         newPatternField[i][j + 3] == 1 &&
+         newPatternField[i][j + 4] == 0){
+        linearship++;
+      }
+      if(newPatternField[j - 1][i] == 0 &&
+        newPatternField[j][i] == 1 && 
+         newPatternField[j + 1][i] == 1 &&
+         newPatternField[j + 2][i] == 1 && 
+         newPatternField[j + 3][i] == 1 &&
+         newPatternField[j + 4][i] == 0){
+        linearship++;
+      }
+    }
+  }
+ //check for quantity of 4-size battleship (linearship)^
+  //check for quantity of 3-size battleship (cruiser)
+  var cruiser = 0;
+  for(let i = 1; i < newPatternField.length - 1 ; i++){
+    for(let j = 1; j < newPatternField[i].length - 4; j++){
+      if(newPatternField[i][j - 1] == 0 && 
+         newPatternField[i][j] == 1 && 
+         newPatternField[i][j + 1] == 1 &&
+         newPatternField[i][j + 2] == 1 && 
+         newPatternField[i][j + 3] == 0){
+        cruiser++;
+      }
+      if(newPatternField[j - 1][i] == 0 &&
+        newPatternField[j][i] == 1 && 
+         newPatternField[j + 1][i] == 1 &&
+         newPatternField[j + 2][i] == 1 && 
+         newPatternField[j + 3][i] == 0){
+        cruiser++;
+      }
+    }
+  }
+    //check for quantity of 3-size battleship (cruiser)^
+  //check for quantity of 2-size battleship (destroyer)
+  var destroyer = 0;
+  for(let i = 1; i < newPatternField.length - 1 ; i++){
+    for(let j = 1; j < newPatternField[i].length - 3; j++){
+      if(newPatternField[i][j - 1] == 0 && 
+         newPatternField[i][j] == 1 && 
+         newPatternField[i][j + 1] == 1 &&
+         newPatternField[i][j + 2] == 0){
+        destroyer++;
+      }
+      if(newPatternField[j - 1][i] == 0 &&
+        newPatternField[j][i] == 1 && 
+         newPatternField[j + 1][i] == 1 &&
+         newPatternField[j + 2][i] == 0){
+        destroyer++;
+      }
+    }
+  }
+  //check for quantity of 2-size battleship (destroyer)^
+  
+  //check for quantity of 1-size battleship (submarine)
+  var submarine = overallSum - 4 * linearship -  3 * cruiser - 2 * destroyer;
+  
+      
+      
+    
+  
+    //check for quantity of 1-size battleship (submarine) ^
+
+
+  //check for appropriate size of the ships*/
+  return linearship === 1 && cruiser === 2 &&  destroyer === 3 && submarine === 4;
+  //return [linearship ,cruiser ,destroyer ,submarine];
+}
+var arr = [
+            [1, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+            [1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+            [1, 0, 1, 0, 1, 1, 1, 0, 1, 0],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+            [0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+console.log(validateBattlefield(arr));
