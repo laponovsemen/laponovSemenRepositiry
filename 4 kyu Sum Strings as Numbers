@@ -1,0 +1,55 @@
+/* Given the string representations of two integers, return the string representation of the sum of those integers.
+
+For example:
+
+sumStrings('1','2') // => '3'
+A string representation of an integer will contain no characters besides the ten numerals "0" to "9".
+
+I have removed the use of BigInteger and BigDecimal in java
+
+Python: your solution need to work with huge numbers (about a milion digits), converting to int will not work. */
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function strip(str){
+  for(let i = 0; i < str.length; i++){
+    if(str[i] == "0"){
+      str = str.replace(str[i], "")
+    } else {
+      break
+    }
+  }
+  return str
+}
+function sumStrings(a, b) {
+  var newA ;
+  var newB ;
+  var res = [];
+  var input = 0;
+  var nextDigit = 0;
+  if(a.length > b.length ){
+    newA = "0" + a;
+    newB = "0".repeat(a.length - b.length + 1) + b;
+  }else{
+    newB = "0" + b;
+    newA = "0".repeat(b.length - a.length + 1) + a;
+  }
+  for(let i = newA.length - 1; i >= 0; i--){
+    input = (Number(newA[i]) + Number(newB[i])) < 10 ? (Number(newA[i]) + Number(newB[i])) : (Number(newA[i]) + Number(newB[i]) - 10) ;
+    if(input + nextDigit == 10){
+      input = 0;
+      nextDigit = 1;
+      res.unshift(input);
+      }else{
+    res.unshift(input + nextDigit); 
+    nextDigit = nextDigit == 1 ? nextDigit -- : nextDigit;
+    nextDigit = (Number(newA[i]) + Number(newB[i]) >= 10) ? 1 : 0 ;
+      
+         }
+    }
+  if(res[0] == 0){
+      res.shift();
+    }  
+    
+  return  strip(res.join("")); // Fix me! 
+}
