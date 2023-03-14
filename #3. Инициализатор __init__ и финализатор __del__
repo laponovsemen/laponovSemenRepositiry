@@ -1,0 +1,28 @@
+class Point:
+
+    "Hui wertw"
+    color = "red"
+    circle = 2
+
+    def __init__(self, a, b):
+
+        self.x = a
+        self.y = b
+
+    def __del__(self):
+        print("Удаление обьекта " + str(self))
+
+    def set_coords(self, x, y):
+        self.x = x
+        self.y = y
+
+    def get_coords(self):
+        return self.x, self.y
+
+pt = Point(1, 2)
+#pt.set_coords(1,2)
+print(pt.__dict__)
+
+#Шаг 1 Создание обьекта (метод __new__ )
+#Шаг 2 Инициализация обьекта (метод __init__)
+
